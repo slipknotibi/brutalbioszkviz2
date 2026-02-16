@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biosz kvíz – 2. forduló</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Biosz kvíz – 2. forduló</h1>
+<div id="timer">10:00</div>
+
+<div id="quizBox"></div>
+
+<button id="startBtn" onclick="startQuiz()">Kezdés</button>
+
+<div id="resultBox"></div>
+
+<button id="showAnswersBtn" style="display:none;">Válaszok megtekintése</button>
+<div id="answersList" style="display:none;"></div>
+
+<div id="stopScreen">
+    STOP
+    <button id="continueBtn">Folytatás</button>
+</div>
+
+<script>
+let questions = [
+    {question:"Miért nincs talajtakaró a sarkvidéken?",answers:["Kevés a fény","Állandó a fagy","Túl sok a csapadék"],correct:1},
+    {question:"A borjúfóka melyik tulajdonsága NEM igaz?",answers:["Gömbölyű fej","Van fülkagylója","Orra elzárható"],correct:1},
+    {question:"A borjúfóka szülése hol történik?",answers:["Vízben","Jégszigeten","Barlangban"],correct:1},
+    {question:"A borjúfóka érzékszervei közül melyik a legfontosabb vadászatkor?",answers:["Hallás","Bajusz","Látás"],correct:1},
+    {question:"A pingvinek csontja miért tömörebb az átlagnál?",answers:["Hogy jobban repüljenek","Hogy könnyebben ússzanak","Hogy jobban szigeteljen"],correct:1},
+    {question:"A császárpingvin hímje hogyan melegíti a tojást?",answers:["Szárnyával","Hasi bőrredővel","Farkával"],correct:1},
+    {question:"A pingvinek miért állnak egyenesen?",answers:["A testfelépítésük miatt","A hideg ellen","A ragadozók miatt"],correct:0},
+    {question:"A jegesmedve bundája idősebb korban milyen árnyalatú lehet?",answers:["Kékes","Sárgás","Szürkés"],correct:1},
+    {question:"A jegesmedve melyik tulajdonsága segíti a lék feltörését?",answers:["Erős végtagok","Hosszú farok","Szőrös talp"],correct:0},
+    {question:"A jegesmedve étrendjében melyik NEM szerepel?",answers:["Rénszarvas","Fóka","Medúza"],correct:2},
+
+    {question:"A hegyen felfelé haladva melyik tényező NEM csökken?",answers:["Hőmérséklet","Levegő sűrűsége","Napsugárzás"],correct:2},
+    {question:"A magas hegyek talajának tápanyagtartalma miért alacsony?",answers:["Kevés a csapadék","Kevés a humusz","Túl sok a napsütés"],correct:1},
+    {question:"A havasi gyopár melyik része NEM fehér?",answers:["Felső levelek","Virágszirmok","Szár"],correct:1},
+    {question:"A havasi gyopár beporzását főleg melyik állat végzi?",answers:["Méhek","Legyek","Hangyák"],correct:1},
+    {question:"A zerge melyik tulajdonsága segíti a menekülést?",answers:["Hosszú farok","Erős ízületek","Széles szarv"],correct:1},
+    {question:"A zerge szarva milyen irányba hajlik?",answers:["Előre","Hátra","Oldalra"],correct:1},
+    {question:"A zerge alváskor merre néz?",answers:["A hegy lába felé","A hegy teteje felé","A nap felé"],correct:0},
+    {question:"A szirti sas tollazata milyen színű?",answers:["Fekete","Barna","Szürke"],correct:1},
+    {question:"A szirti sas csőre milyen funkcióra alkalmas?",answers:["Szűrés","Tépés","Csípés"],correct:1},
+    {question:"Magyarországon hány pár szirti sas költ rendszeresen?",answers:["1–2","2–3","5–6"],correct:1},
+
+    {question:"A tenger melyik rétegében állandó a 2–4 °C hőmérséklet?",answers:["200 m alatt","2000 m alatt","Felszínen"],correct:0},
+    {question:"A tengervíz sótartalma átlagosan mennyi?",answers:["1%","2%","3,5%"],correct:2},
+    {question:"A tengeri sün mészvázán hol található a végbélnyílás?",answers:["Oldalt","Felül","Alul"],correct:1},
+    {question:"A tengeri sün szájnyílása hol található?",answers:["Felül","Oldalt","Alul"],correct:2},
+    {question:"A medúza testén hány nyílás található?",answers:["1","2","3"],correct:0},
+    {question:"A medúza salakanyaga hol távozik?",answers:["Külön nyíláson","A szájnyíláson","A tapogatókon"],correct:1},
+    {question:"A kagylóhéj hány teknőből áll?",answers:["1","2","3"],correct:1},
+    {question:"A kagylók milyen típusú állatok?",answers:["Indikátor állatok","Ragadozók","Növényevők"],correct:0},
+    {question:"A barnamoszat nagysága elérheti a:",answers:["30–40 cm","3–4 m","300–400 m"],correct:2},
+    {question:"A barnamoszat melyik tulajdonsága segíti a lebegést?",answers:["Gyökér","Légtömlő","Vastag szár"],correct:1},
+    {question:"A szivacsok testén mi áramlik át folyamatosan?",answers:["Levegő","Víz","Olaj"],correct:1},
+    {question:"A szivacsok milyen szaporodási módra képesek?",answers:["Bimbózás","Ivaros szaporodás csak","Osztódás"],correct:0},
+    {question:"A heringek rajai mekkorák lehetnek?",answers:["Néhány méteresek","Több km hosszúak","Csak 10–20 m-esek"],correct:1},
+    {question:"A heringek bőrét mi borítja?",answers:["Nyálkaréteg","Szőr","Kemény páncél"],correct:0},
+    {question:"A tonhal testének melyik része páncélszerű?",answers:["Farok","Fej mögötti pikkelyek","Hátúszó"],correct:1},
+    {question:"A tonhal mekkora méretet érhet el?",answers:["50 cm","1–2 m","2–5 m"],correct:2},
+    {question:"A cápák bőre miért érdes?",answers:["Fogas pikkelyek miatt","Szőr miatt","Sókiválás miatt"],correct:0},
+    {question:"A cápák fogai miért törnek ki könnyen?",answers:["Nincs gyökerük","Túl nagyok","Lágyak"],correct:0},
+    {question:"A palackorrú delfin hány egyedből álló csoportokban él?",answers:["5–10","20–30","40 körül"],correct:2},
+    {question:"A kékbálna borja naponta mennyi anyatejet fogyaszt?",answers:["40 liter","100 liter","400 liter"],correct:2}
+];
+
+let current = 0;
+let score = 0;
+let timeLeft = 600;
+let timer;
+let userAnswers = [];
+
+function formatTime(sec) {
+    let m = Math.floor(sec / 60);
+    let s = sec % 60;
+    return `${m}:${s < 10 ? "0" + s : s}`;
+}
+
+function startQuiz() {
+    document.getElementById("startBtn").style.display = "none";
+    document.getElementById("stopScreen").style.display = "none";
+    document.getElementById("timer").innerText = formatTime(timeLeft);
+    showQuestion();
+    startTimer();
+}
+
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = formatTime(timeLeft);
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            showStopScreen();
+        }
+    }, 1000);
+}
+
+function showQuestion() {
+    let q = questions[current];
+    let html = `<div class='question'><h3>${q.question}</h3>`;
+
+    q.answers.forEach((ans, i) => {
+        html += `<button onclick="answer(${i})">${ans}</button>`;
+    });
+
+    html += "</div>";
+    document.getElementById("quizBox").innerHTML = html;
+}
+
+function answer(i) {
+    userAnswers[current] = i;
+
+    if (i === questions[current].correct) score++;
+
+    current++;
+
+    if (current < questions.length) {
+        showQuestion();
+    } else {
+        endQuiz();
+    }
+}
+
+function endQuiz() {
+    clearInterval(timer);
+    document.getElementById("quizBox").innerHTML = "";
+
+    let percent = Math.round((score / questions.length) * 100);
+    let grade = 1;
+    if (percent >= 90) grade = 5;
+    else if (percent >= 75) grade = 4;
+    else if (percent >= 60) grade = 3;
+    else if (percent >= 45) grade = 2;
+
+    document.getElementById("resultBox").innerHTML =
+        `<h2>Eredmény: ${score} / ${questions.length} (${percent}%)<br>Érdemjegy: ${grade}</h2>`;
+
+    document.getElementById("showAnswersBtn").style.display = "block";
+}
+
+function showStopScreen() {
+    document.getElementById("quizBox").innerHTML = "";
+    document.getElementById("stopScreen").style.display = "flex";
+    clearInterval(timer);
+}
+
+document.getElementById("continueBtn").addEventListener("click", function () {
+    document.getElementById("stopScreen").style.display = "none";
+    timeLeft = 600;
+    document.getElementById("timer").innerText = formatTime(timeLeft);
+    startTimer();
+    showQuestion();
+});
+
+document.getElementById("showAnswersBtn").addEventListener("click", function () {
+    let html = "<h2>Helyes válaszok</h2>";
+
+    questions.forEach((q, i) => {
+        html += `
+            <div style="margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+                <strong>${i+1}. kérdés:</strong> ${q.question}<br>
+                <span style="color:green;"><strong>Helyes válasz:</strong> ${q.answers[q.correct]}</span><br>
+                <span style="color:blue;"><strong>A te válaszod:</strong> ${userAnswers[i] !== undefined ? q.answers[userAnswers[i]] : "—"}</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("answersList").innerHTML = html;
+    document.getElementById("answersList").style.display = "block";
+});
+</script>
+
+</body>
+</html>

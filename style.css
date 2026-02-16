@@ -1,0 +1,116 @@
+:root {
+    --bg: #eef6ff;
+    --text: #003366;
+    --card: #ffffff;
+    --button: #eef3ff;
+    --button-hover: #dce7ff;
+    --border: #aac;
+}
+
+body.dark {
+    --bg: #0d1117;
+    --text: #e6edf3;
+    --card: #161b22;
+    --button: #21262d;
+    --button-hover: #30363d;
+    --border: #30363d;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    transition: 0.3s;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#timer {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#startBtn {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 12px 25px;
+    font-size: 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#startBtn:hover {
+    background: #005fcc;
+}
+
+#darkModeToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    padding: 8px 14px;
+    background: var(--button);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.question {
+    background: var(--card);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.answers button {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--button);
+    color: var(--text);
+}
+
+.answers button:hover {
+    background: var(--button-hover);
+}
+
+#resultBox {
+    margin-top: 30px;
+    padding: 25px;
+    background: var(--card);
+    border-radius: 10px;
+    border: 2px solid var(--text);
+    font-size: 22px;
+    display: none;
+    text-align: center;
+}
+
+#stopScreen {
+    display: none;
+    font-size: 60px;
+    text-align: center;
+    font-weight: bold;
+    color: red;
+    margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 22px; }
+    #timer { font-size: 22px; }
+    .answers button { font-size: 15px; padding: 10px; }
+}
